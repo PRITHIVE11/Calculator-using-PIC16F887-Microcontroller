@@ -1,0 +1,206 @@
+
+
+#include <xc.h>
+#define _XTAL_FREQ 4000000
+void main(void) {
+    PORTA=TRISA=0;
+    PORTC = 0;
+    TRISC = 0X0F;
+    ANSEL = 0;
+    ANSELH = 0;
+
+    int segment[] = {
+        0x3F, // 0
+        0x06, // 1
+        0x5B, // 2
+        0x4F, // 3
+        0x66, // 4
+        0x6D, // 5
+        0x7D, // 6
+        0x07, // 7
+        0x7F, // 8
+        0x6F, // 9
+        0x80  //.
+    };
+    int a[2]={0,0};
+    int n=0;
+    int r=0;
+    int s=0,o=0;
+  
+                
+    while(1)
+    {
+        
+        
+        if(s==0||s==2)
+        {
+         RC4=RC6=RC7=0;
+        RC5=1;
+        if(RC3==1){//0
+            PORTA = segment[0];
+            a[n]=0;
+            n++,s++;
+        }
+        
+        RC5=RC6=RC7=0;
+        RC4=1;
+        if(RC2==1){//1
+            PORTA=segment[1];
+            a[n] =1;
+            n++,s++;
+        }
+        
+        RC4=RC6=RC7=0;
+        RC5=1;
+        if(RC2==1){//2
+            PORTA = segment[2];
+            a[n]=2;
+            n++,s++;
+        }
+        
+        RC4=RC5=RC7=0;
+        RC6=1;
+        if(RC2==1){//3
+        PORTA = segment[3];
+        a[n]=3;
+        n++,s++;
+        }
+        
+        RC5=RC6=RC7=0;
+        RC4=1;
+        if(RC1==1){//4
+            PORTA=segment[4];
+            a[n]=4;
+            n++,s++;
+        }
+        
+        RC4=RC6=RC7=0;
+        RC5=1;
+        if(RC1==1){//5
+            PORTA = segment[5];
+            a[n]=5;
+            n++,s++;
+        }
+        
+        RC4=RC5=RC7=0;
+        RC6=1;
+        if(RC1==1){//6
+        PORTA = segment[6];
+        a[n]= 6;
+        n++,s++;
+        }
+        
+        RC5=RC6=RC7=0;
+        RC4=1;
+        if(RC0==1){//7
+            PORTA = segment[7];
+            a[n]=7;
+            n++,s++;
+        }
+        
+        RC4=RC6=RC7=0;
+        RC5=1;
+        if(RC0==1){//8
+            PORTA= segment[8];
+            a[n]=8;
+            n++,s++;
+        } 
+        
+        RC4=RC5=RC7=0;
+        RC6=1;
+        if(RC0==1){//9
+            PORTA = segment[9];
+            a[n]=9;
+            n++,s++;
+        }
+        
+        
+        } 
+        if(s==1){
+        //SYMBOL
+        RC4=RC5=RC6=0;
+        RC7=1;
+        if(RC0==1){//divide
+            r=a[0];
+             o=4,s=2;
+             RC5=RC6=RC7=0;
+        RC4=1;
+        if(RC3==1)
+        {
+    
+            n=0,s=0;
+            PORTA = segment[0];
+        }
+        }
+        
+        RC4=RC5=RC6=0;
+        RC7=1;
+        if(RC1==1){//multiple
+            r=a[0];
+             o=3,s=2;
+             RC5=RC6=RC7=0;
+        RC4=1;
+        if(RC3==1)
+        {
+            
+            n=0,s=0;
+            PORTA = segment[0];
+        }
+        }
+        
+        RC4=RC5=RC6=0;
+        RC7=1;
+        if(RC2==1){//suberation
+            r=a[0];
+            o=2,s=2;
+            
+        }
+        
+        RC4=RC5=RC6=0;
+        RC7=1;
+        if(RC3==1){//add
+            r=a[0];
+            o=1;
+            s=2;
+           
+        }
+         RC5=RC6=RC7=0;
+        RC4=1;
+        if(RC3==1)
+        {
+         
+            n=0,s=0;
+            PORTA = segment[0];
+        }
+        }
+        if(s==3)
+        {
+         RC4=RC5=RC7=0;
+        RC6=1;
+        if(RC3==1)
+        {//=
+            if(o==1)
+            {
+            PORTA=segment[r+a[1]];
+       
+            }
+            else if(o==2){
+                PORTA=segment[r-a[1]];
+                
+            }
+            else if(o==3)
+            {
+                PORTA=segment[r*a[1]];
+             }
+            else if(o==4)
+            {
+                PORTA=segment[r/a[1]];
+            }
+            n=0,s=0;
+            
+        }
+        }
+        }
+
+    return;
+}
